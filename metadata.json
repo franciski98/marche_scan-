@@ -1,0 +1,6 @@
+{
+  "name": "Marché Scan",
+  "description": "Automatisation de la veille des marchés publics dans les secteurs informatique et énergie au Burkina Faso.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

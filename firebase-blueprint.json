@@ -1,0 +1,30 @@
+{
+  "entities": {
+    "VeilleReport": {
+      "title": "VeilleReport",
+      "description": "Rapport de veille des marchés publics",
+      "type": "object",
+      "properties": {
+        "dateRapport": {
+          "type": "string"
+        },
+        "rawData": {
+          "type": "object"
+        },
+        "markdown": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "object"
+        }
+      },
+      "required": ["dateRapport", "rawData", "markdown"]
+    }
+  },
+  "firestore": {
+    "veille_reports/{reportId}": {
+      "schema": "VeilleReport",
+      "description": "Collection de rapports de veille des marchés publics"
+    }
+  }
+}

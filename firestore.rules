@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net: Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Allow unauthenticated reads, writes, and deletes on veille_reports,
+    // as our server acts as a public proxy and uses the web client SDK without client authentication.
+    match /veille_reports/{reportId} {
+      allow read, write, delete: if true;
+    }
+  }
+}
