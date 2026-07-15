@@ -40,17 +40,33 @@ const ai = new GoogleGenAI({
   },
 });
 
-// Initialize Firebase App & Firestore using the automatically generated config
+// Initialize Firebase App & Firestore using the automatically generated config 1
+// Initialize Firebase App & Firestore 2
 let db: any = null;
 try {
-  const configPath = path.join(process.cwd(), "firebase-applet-config.json");
-  if (fs.existsSync(configPath)) {
-    const firebaseConfig = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+  let firebaseConfig: any = null;
+
+  // 1. On cherche d'abord dans les variables d'environnement (Idéal pour Render)
+  if (process.env.FIREBASE_CONFIG) {
+    firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG);
+  } 
+  // 2. Si absente, on cherche le fichier local (Idéal pour ton développement en local)
+  else {
+    const configPath = path.join(process.cwd(), "firebase-applet-config.json");
+    if (fs.existsSync(configPath)) {
+      const fileContent = fs.readFileSync(configPath, "utf-8").trim();
+      if (fileContent) {
+        firebaseConfig = JSON.parse(fileContent);
+      }
+    }
+  }
+
+  if (firebaseConfig) {
     const firebaseApp = initializeApp(firebaseConfig);
     db = getFirestore(firebaseApp, firebaseConfig.firestoreDatabaseId || "(default)");
-    console.log(`Firebase initialized successfully with database ID: ${firebaseConfig.firestoreDatabaseId}`);
+    console.log(`Firebase initialized successfully with database ID: ${firebaseConfig.firestoreDatabaseId || "(default)"}`);
   } else {
-    console.error("firebase-applet-config.json not found. Firestore will not work.");
+    console.error("Firebase configuration missing (neither FIREBASE_CONFIG env nor firebase-applet-config.json found).");
   }
 } catch (error) {
   console.error("Error initializing Firebase:", error);
